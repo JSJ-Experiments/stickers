@@ -1,6 +1,8 @@
 package de.loicezt.stickers
 
+import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import de.loicezt.stickers.video.CropAndScale
@@ -28,6 +30,32 @@ class MainActivity : FlutterActivity() {
     private val scope = CoroutineScope(
         Dispatchers.Main + SupervisorJob()
     )
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        intent = normalizeViewIntent(intent)
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        val normalizedIntent = normalizeViewIntent(intent)
+        super.onNewIntent(normalizedIntent)
+        setIntent(normalizedIntent)
+    }
+
+    private fun normalizeViewIntent(intent: Intent): Intent {
+        if (intent.action != Intent.ACTION_VIEW || intent.data == null) {
+            return intent
+        }
+
+        val data = intent.data ?: return intent
+        val mimeType = intent.type ?: contentResolver.getType(data) ?: "*/*"
+        return Intent(intent).apply {
+            action = Intent.ACTION_SEND
+            type = mimeType
+            putExtra(Intent.EXTRA_STREAM, data)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+    }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -163,4 +191,3 @@ class MainActivity : FlutterActivity() {
         scope.cancel()
     }
 }
-

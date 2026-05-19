@@ -83,11 +83,23 @@ class SettingsController with ChangeNotifier {
     _defaultAuthor = await _settingsService.defaultAuthor();
     _locale = await _settingsService.locale();
     _googleFonts = await _settingsService.googleFonts();
+    _staticSizeLimit = await _settingsService.staticSizeLimit();
+    _animatedSizeLimit = await _settingsService.animatedSizeLimit();
 
     notifyListeners();
   }
 
   /// Update and persist the ThemeMode based on the user's selection.
+  Future<void> updateThemeMode(ThemeMode? newThemeMode) async {
+    if (newThemeMode == null) return;
+    if (newThemeMode == _themeMode) return;
+
+    _themeMode = newThemeMode;
+    notifyListeners();
+    await _settingsService.updateThemeMode(newThemeMode);
+  }
+}
+eMode based on the user's selection.
   Future<void> updateThemeMode(ThemeMode? newThemeMode) async {
     if (newThemeMode == null) return;
     if (newThemeMode == _themeMode) return;

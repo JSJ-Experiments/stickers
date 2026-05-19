@@ -604,19 +604,19 @@ class _EditPageState extends State<EditPage> {
       print("Exported WebP in ${sw.elapsedMilliseconds}ms");
       data = await output.readAsBytes();
       print("Output size: ${data.lengthInBytes / 1024}kiB");
-      if (data.lengthInBytes / 1024 < 500) {
+      if (data.lengthInBytes / 1024 < settingsController.animatedSizeLimit) {
         break;
       } else {
-        print("Result is ${data.lengthInBytes / 500 / 1024} times too big");
-        if (data.lengthInBytes / 1024 > 550) {
+        print("Result is ${data.lengthInBytes / settingsController.animatedSizeLimit / 1024} times too big");
+        if (data.lengthInBytes / 1024 > settingsController.animatedSizeLimit + 50) {
           // If the sticker is really too large, the only solution is to drop frames
-          fps = (fps / (data.lengthInBytes / 1024) * 550).round();
+          fps = (fps / (data.lengthInBytes / 1024) * (settingsController.animatedSizeLimit + 50)).round();
         }
         quality -= 20;
         print("New configuration: q=$quality fps=$fps");
       }
     }
-    if (data!.lengthInBytes / 1024 > 500) {
+    if (data!.lengthInBytes / 1024 > settingsController.animatedSizeLimit) {
       if (!context.mounted) throw Exception();
       Navigator.of(context).pop();
       showDialog(

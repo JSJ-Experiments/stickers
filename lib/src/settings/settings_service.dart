@@ -70,4 +70,12 @@ class SettingsService {
   Future<void> updateGoogleFonts(bool googleFonts) async {
     _prefs.setBool("googleFonts", googleFonts);
   }
+
+  Future<void> updateStaticSizeLimit(int limit) async {
+    _prefs.setInt("staticSizeLimit", limit);
+  }
+
+  Future<void> updateAnimatedSizeLimit(int limit) async {
+    _prefs.setInt("animatedSizeLimit", limit);
+  }
 }

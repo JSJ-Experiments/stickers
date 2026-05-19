@@ -249,9 +249,42 @@ class SettingsPage extends StatelessWidget {
 
   void _showQuickModeDefaultsDialog(BuildContext context) {
     showDialog(
+        context: context,
+        builder: (context) => EditQuickmodeDefaultsDialog(
+              controller: controller,
+            ));
+  }
+
+  void _showLimitDialog(BuildContext context, String title, int currentValue, void Function(int) onSaved) {
+    final textController = TextEditingController(text: currentValue.toString());
+    showDialog(
       context: context,
-      builder: (context) => EditQuickmodeDefaultsDialog(
-        settingsController: controller,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: TextField(
+          controller: textController,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: "Limit in KB",
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(AppLocalizations.of(context)!.cancel),
+          ),
+          TextButton(
+            onPressed: () {
+              final val = int.tryParse(textController.text);
+              if (val != null && val > 0) {
+                onSaved(val);
+                Navigator.of(context).pop();
+              }
+            },
+            child: Text(AppLocalizations.of(context)!.save),
+          ),
+        ],
       ),
     );
   }

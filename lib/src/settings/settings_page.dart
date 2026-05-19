@@ -189,6 +189,24 @@ class SettingsPage extends StatelessWidget {
             ),
           ),
           ListTile(
+            onTap: () => _showLimitDialog(context, "Static Size Limit (KB)", controller.staticSizeLimit, controller.updateStaticSizeLimit),
+            leading: Icon(Icons.photo),
+            title: Text("Static Size Limit (KB)"),
+            subtitle: Opacity(
+              opacity: .7,
+              child: Text("Current limit: ${controller.staticSizeLimit} KB"),
+            ),
+          ),
+          ListTile(
+            onTap: () => _showLimitDialog(context, "Animated Size Limit (KB)", controller.animatedSizeLimit, controller.updateAnimatedSizeLimit),
+            leading: Icon(Icons.animation),
+            title: Text("Animated Size Limit (KB)"),
+            subtitle: Opacity(
+              opacity: .7,
+              child: Text("Current limit: ${controller.animatedSizeLimit} KB"),
+            ),
+          ),
+          ListTile(
             title: Text(AppLocalizations.of(context)!.clearCache),
             subtitle: Opacity(
               opacity: .7,
@@ -251,7 +269,7 @@ class SettingsPage extends StatelessWidget {
     showDialog(
         context: context,
         builder: (context) => EditQuickmodeDefaultsDialog(
-              controller: controller,
+              settingsController: controller,
             ));
   }
 
@@ -282,7 +300,7 @@ class SettingsPage extends StatelessWidget {
                 Navigator.of(context).pop();
               }
             },
-            child: Text(AppLocalizations.of(context)!.save),
+            child: Text(AppLocalizations.of(context)!.done),
           ),
         ],
       ),

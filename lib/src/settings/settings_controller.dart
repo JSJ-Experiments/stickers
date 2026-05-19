@@ -23,9 +23,15 @@ class SettingsController with ChangeNotifier {
   late String _defaultTitle;
   late String _locale;
   late bool _googleFonts;
+  late int _staticSizeLimit;
+  late int _animatedSizeLimit;
 
   // Whether the user has agreed or not to use the google fonts service
   bool get googleFonts => _googleFonts;
+
+  int get staticSizeLimit => _staticSizeLimit;
+
+  int get animatedSizeLimit => _animatedSizeLimit;
 
   String get defaultTitle => _defaultTitle;
 
@@ -50,6 +56,20 @@ class SettingsController with ChangeNotifier {
     _googleFonts = googleFonts;
     notifyListeners();
     await _settingsService.updateGoogleFonts(googleFonts);
+  }
+
+  Future<void> updateStaticSizeLimit(int limit) async {
+    if (limit == _staticSizeLimit) return;
+    _staticSizeLimit = limit;
+    notifyListeners();
+    await _settingsService.updateStaticSizeLimit(limit);
+  }
+
+  Future<void> updateAnimatedSizeLimit(int limit) async {
+    if (limit == _animatedSizeLimit) return;
+    _animatedSizeLimit = limit;
+    notifyListeners();
+    await _settingsService.updateAnimatedSizeLimit(limit);
   }
 
   Future<void> updateDefaultAuthor(String defaultAuthor) async {
@@ -90,16 +110,6 @@ class SettingsController with ChangeNotifier {
   }
 
   /// Update and persist the ThemeMode based on the user's selection.
-  Future<void> updateThemeMode(ThemeMode? newThemeMode) async {
-    if (newThemeMode == null) return;
-    if (newThemeMode == _themeMode) return;
-
-    _themeMode = newThemeMode;
-    notifyListeners();
-    await _settingsService.updateThemeMode(newThemeMode);
-  }
-}
-eMode based on the user's selection.
   Future<void> updateThemeMode(ThemeMode? newThemeMode) async {
     if (newThemeMode == null) return;
     if (newThemeMode == _themeMode) return;

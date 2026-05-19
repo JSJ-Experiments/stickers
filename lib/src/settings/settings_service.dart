@@ -33,6 +33,10 @@ class SettingsService {
 
   Future<bool> googleFonts() async => _prefs.getBool("googleFonts") ?? false;
 
+  Future<int> staticSizeLimit() async => _prefs.getInt("staticSizeLimit") ?? 100;
+
+  Future<int> animatedSizeLimit() async => _prefs.getInt("animatedSizeLimit") ?? 500;
+
   Future<String> defaultTitle() async => _prefs.getString("defaultPackName") ?? "New sticker pack";
 
   Future<String> defaultAuthor() async => _prefs.getString("defaultAuthor") ?? "auto-generated";

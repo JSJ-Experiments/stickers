@@ -49,7 +49,7 @@ jobs:
           storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
           keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
-          storeFile=app/stickers-release.jks
+          storeFile=stickers-release.jks
           EOF
           printf '%s' '${{ secrets.ANDROID_KEYSTORE_BASE64 }}' | base64 --decode > android/app/stickers-release.jks
 
